@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import NewSong from './NewSong';
+import uuid from 'uuid/v1';
 
 const SongList = () => {
   const [songs, setSongs] = useState([   // songs is variable & setSong is a function
@@ -6,9 +8,21 @@ const SongList = () => {
     { title: 'High in the halls', id: 2 },
     { title: 'As long as you love me', id: 3 }
   ])
-  const addSong = () => {
-    setSongs([...songs,{ title: 'new Songs', id: 4 }]); //for updating state we need to call that function 
+  const addSong = (title) => {
+    setSongs([...songs, { title, id: uuid() }]); //for updating state we need to call that function 
   }
+  const [noOfSong, setSongListSize] = useState(0);
+  // const sizeOfSongList = () => {
+  //   setSongListSize(songs.length + 1)
+  // }
+  useEffect(() => { // this will re render when song list changed
+    console.log("run hooks", songs)
+  }, [songs])
+
+  // useEffect(() => { // this will render when no of song changed
+  //   console.log("run hooks", noOfSong)
+  // }, [noOfSong])
+
   return (
     <div className="song-list">
       <ul>
@@ -16,7 +30,8 @@ const SongList = () => {
           <li key={song.id}>{song.title}</li>
         )}
       </ul>
-      <button onClick={addSong}>Add new Song</button>
+      <NewSong addSong={addSong} />
+      {/* <a onClick={sizeOfSongList}>Size of Sog List {noOfSong}</a> */}
     </div>
   );
 }
